@@ -8,6 +8,10 @@ A simple Python client for interacting with the MindRoot API. This SDK provides 
 `task_result` command enabled from the `chat` plugin section under Available Commands
 (`/admin` | Agents | select agent from drop down).**
 
+## API Key Generation
+
+Go to `/admin` | MindRoot API Keys in your MindRoot installation.
+
 ## Installation
 
 You can install the package from PyPI:
