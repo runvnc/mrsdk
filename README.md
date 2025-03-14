@@ -2,6 +2,12 @@
 
 A simple Python client for interacting with the MindRoot API. This SDK provides programmatic access to run tasks with MindRoot AI agents.
 
+## Agent Definition Requirements
+
+**Note that for the `results` field to be filled in, the Agent you reference MUST have the
+`task_result` command enabled from the `chat` plugin section under Available Commands
+(`/admin` | Agents | select agent from drop down).**
+
 ## Installation
 
 You can install the package from PyPI:
