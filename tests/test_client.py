@@ -17,7 +17,8 @@ class TestMindRootClient:
         """Set up test fixtures."""
         # Create a test API key for testing
         os.environ["MINDROOT_API_KEY"] = "test-api-key"
-        self.client = MindRootClient()
+        # Create client with required base_url
+        self.client = MindRootClient(base_url="http://localhost:8010")
         
     def teardown_method(self):
         """Tear down test fixtures."""
@@ -27,14 +28,15 @@ class TestMindRootClient:
     
     def test_init_with_api_key(self):
         """Test initialization with explicit API key."""
-        client = MindRootClient(api_key="my-custom-key")
+        client = MindRootClient(api_key="my-custom-key", base_url="http://localhost:8010")
         assert client.api_key == "my-custom-key"
-        assert client.base_url == "http://localhost:8012"
+        assert client.base_url == "http://localhost:8010"
         assert client.timeout == 300
     
     def test_init_with_env_var(self):
         """Test initialization with API key from environment variable."""
         assert self.client.api_key == "test-api-key"
+        assert self.client.base_url == "http://localhost:8010"
     
     def test_init_without_api_key(self):
         """Test initialization without API key raises error."""
@@ -42,8 +44,14 @@ class TestMindRootClient:
             del os.environ["MINDROOT_API_KEY"]
             
         with pytest.raises(ValueError) as excinfo:
-            MindRootClient()
+            MindRootClient(base_url="http://localhost:8010")
         assert "API key must be provided" in str(excinfo.value)
+    
+    def test_init_without_base_url(self):
+        """Test initialization without base_url raises error."""
+        with pytest.raises(ValueError) as excinfo:
+            MindRootClient(api_key="test-key")
+        assert "base_url must be provided" in str(excinfo.value)
     
     def test_init_with_custom_url_and_timeout(self):
         """Test initialization with custom URL and timeout."""
@@ -71,7 +79,7 @@ class TestMindRootClient:
             
             # Check that the API was called correctly
             mock_post.assert_called_once_with(
-                "http://localhost:8012/task/Assistant",
+                "http://localhost:8010/task/Assistant",
                 params={"api_key": "test-api-key"},
                 json={"instructions": "Test instructions"},
                 timeout=300

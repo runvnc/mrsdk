@@ -16,7 +16,7 @@ def main():
     parser.add_argument("instructions", help="Instructions for the AI agent")
     parser.add_argument("--agent", default="Assistant", help="Name of the agent (default: Assistant)")
     parser.add_argument("--trace", action="store_true", help="Include full trace in results")
-    parser.add_argument("--url", default="http://localhost:8012", help="Base URL of the MindRoot API")
+    parser.add_argument("--url", required=True, help="Base URL of the MindRoot API (e.g., http://localhost:8010)")
     parser.add_argument("--json", action="store_true", help="Output results as JSON")
     
     args = parser.parse_args()

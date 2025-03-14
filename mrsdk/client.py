@@ -12,22 +12,26 @@ from .exceptions import MindRootError
 class MindRootClient:
     """Client for interacting with the MindRoot API."""
 
-    def __init__(self, api_key: Optional[str] = None, base_url: str = "http://localhost:8012", timeout: int = 300):
+    def __init__(self, api_key: Optional[str] = None, base_url: Optional[str] = None, timeout: int = 300):
         """
         Initialize the MindRoot API client.
 
         Args:
             api_key: API key for authentication. If not provided, will try to get from MINDROOT_API_KEY env variable.
-            base_url: Base URL of the MindRoot API server. Default is http://localhost:8012.
+            base_url: Base URL of the MindRoot API server. Must be provided, typically 'http://localhost:8010' for local instances.
             timeout: Request timeout in seconds. Default is 300 (5 minutes).
 
         Raises:
             ValueError: If no API key is provided or found in environment variables.
+            ValueError: If no base_url is provided.
         """
         self.api_key = api_key or os.environ.get("MINDROOT_API_KEY")
         if not self.api_key:
             raise ValueError("API key must be provided or set as MINDROOT_API_KEY environment variable")
         
+        if not base_url:
+            raise ValueError("base_url must be provided (e.g., 'http://localhost:8010')")
+            
         self.base_url = base_url.rstrip('/')
         self.timeout = timeout
 

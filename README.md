@@ -4,7 +4,15 @@ A simple Python client for interacting with the MindRoot API. This SDK provides 
 
 ## Installation
 
-You can install the package directly from GitHub:
+You can install the package from PyPI:
+
+```bash
+pip install mrsdk
+```
+
+This is the recommended installation method for most users.
+
+Alternatively, you can install directly from GitHub:
 
 ```bash
 pip install git+https://github.com/mindroot/mindroot-python-sdk.git
@@ -21,12 +29,15 @@ pip install -e .
 ```python
 from mrsdk import MindRootClient
 
-# Initialize client with your API key
-client = MindRootClient(api_key="your_api_key_here")
+# Initialize client with your API key and MindRoot URL
+client = MindRootClient(
+    api_key="your_api_key_here",
+    base_url="http://localhost:8010"
+)
 
 # Or use environment variable
 # export MINDROOT_API_KEY=your_api_key_here
-# client = MindRootClient()
+# client = MindRootClient(base_url="http://localhost:8010")
 
 # Run a task with an agent
 result = client.run_task(
@@ -45,6 +56,7 @@ print(result["results"])
 ```python
 result = client.run_task(
     agent_name="Assistant",
+     base_url="http://localhost:8010",
     instructions="Please write a program to calculate the first 10 prime numbers.",
     include_trace=True
 )
@@ -63,7 +75,7 @@ for cmd in result["full_results"]:
 ```python
 from mrsdk import MindRootClient, MindRootError
 
-client = MindRootClient()
+client = MindRootClient(base_url="http://localhost:8010")
 
 try:
     result = client.run_task("Assistant", "Complex task instructions here")
@@ -79,8 +91,8 @@ except Exception as e:
 ```python
 # For connecting to a custom MindRoot instance
 client = MindRootClient(
-    api_key="your_api_key",
-    base_url="https://mindroot.your-company.com",
+    api_key="your_api_key_here",
+    base_url="https://mindroot.your-company.com",  # Always required
     timeout=600  # Increase timeout for complex tasks (in seconds)
 )
 ```
@@ -93,11 +105,11 @@ The package includes a simple command-line interface for quick testing:
 # Set your API key
 export MINDROOT_API_KEY=your_api_key_here
 
-# Run the example script
-python -m mrsdk.cli "What is the square root of 256? Show your work."
+# Run the example script (specify the MindRoot server URL)
+python -m mrsdk.cli "What is the square root of 256? Show your work." --url http://localhost:8010
 
 # Include full trace in the output
-python -m mrsdk.cli "Calculate the first 10 prime numbers." --trace
+python -m mrsdk.cli "Calculate the first 10 prime numbers." --url http://localhost:8010 --trace
 
 # Specify a different agent
 python -m mrsdk.cli "Translate this to French: Hello, world!" --agent Translator
@@ -108,13 +120,12 @@ python -m mrsdk.cli "Translate this to French: Hello, world!" --agent Translator
 ### MindRootClient
 
 ```python
-client = MindRootClient(api_key=None, base_url="http://localhost:8012", timeout=300)
+client = MindRootClient(api_key=None, base_url="http://localhost:8010", timeout=300)
 ```
 
 **Parameters:**
 
-- `api_key` (str, optional): Your MindRoot API key. If not provided, it will look for the `MINDROOT_API_KEY` environment variable.
-- `base_url` (str): Base URL of the MindRoot API server. Default is `http://localhost:8012`.
+-- `base_url` (str, required): Base URL of the MindRoot API server (e.g., `http://localhost:8010`).
 - `timeout` (int): Request timeout in seconds. Default is 300 (5 minutes).
 
 ### Methods

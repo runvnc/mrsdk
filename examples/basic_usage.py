@@ -22,9 +22,14 @@ def main():
         print("Please set it with: export MINDROOT_API_KEY=your_api_key_here")
         sys.exit(1)
     
-    # Initialize the client
-    client = MindRootClient()
+    # Base URL for the MindRoot API server
+    base_url = "http://localhost:8010"
     
+    # Initialize the client with API key from environment and the base URL
+    client = MindRootClient(
+        base_url=base_url
+    )
+
     try:
         # Example 1: Basic task
         print("\n===== EXAMPLE 1: Basic Task =====\n")

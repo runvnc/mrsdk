@@ -52,8 +52,11 @@ def main():
         print("Please set it with: export MINDROOT_API_KEY=your_api_key_here")
         sys.exit(1)
     
-    # Initialize the client with a longer timeout
-    client = MindRootClient(timeout=600)  # 10 minutes timeout
+    # Initialize the client with a longer timeout and required base_url
+    client = MindRootClient(
+        base_url="http://localhost:8010",  # Required base URL for the MindRoot server
+        timeout=600  # 10 minutes timeout
+    )
     
     try:
         # Example 1: Data extraction task
